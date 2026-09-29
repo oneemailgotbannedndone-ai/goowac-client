@@ -35,6 +35,7 @@ public final class ConfigStore {
             JsonArray array = root.getAsJsonArray("enabled");
             java.util.List<String> names = new java.util.ArrayList<>();
             array.forEach(element -> names.add(element.getAsString()));
+            names.remove("Detection Test");
             modules.restoreEnabledNames(names);
         } catch (Exception ignored) {
             // Keep defaults when a config is malformed.
@@ -48,7 +49,7 @@ public final class ConfigStore {
 
             JsonObject root = new JsonObject();
             JsonArray enabled = new JsonArray();
-            modules.enabledNames().forEach(enabled::add);
+            modules.enabledNames().stream().filter(name -> !name.equals("Detection Test")).forEach(enabled::add);
             root.add("enabled", enabled);
             root.addProperty("version", 1);
 
