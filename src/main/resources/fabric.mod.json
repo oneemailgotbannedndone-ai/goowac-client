@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "goowacclient",
+  "version": "${version}",
+  "name": "Goowac Client",
+  "description": "Goowac Client: a configurable Fabric client with an 82-module catalogue, HUD, and optional Spotify integration.",
+  "authors": ["Goowac"],
+  "environment": "client",
+  "entrypoints": { "client": ["dev.goowac.client.GoowacClient"] },
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
