@@ -19,7 +19,7 @@ jobs:
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14.3'
+          gradle-version: '9.2.0'
       - name: Build JAR
         run: gradle build --no-daemon
       - name: Find JAR
@@ -29,8 +29,7 @@ jobs:
           JAR=$(find build/libs -maxdepth 1 -type f -name 'goowac-client-*.jar' ! -name '*-sources.jar' | head -n 1)
           test -n "$JAR"
           echo "path=$JAR" >> "$GITHUB_OUTPUT"
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: goowac-client-jar
           path: ${{ steps.jar.outputs.path }}
