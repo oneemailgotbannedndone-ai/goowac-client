@@ -30,4 +30,6 @@ public final class ModuleManager {
     public List<Module> all() { return Collections.unmodifiableList(modules); }
     public List<Module> category(ModuleCategory c) { return Collections.unmodifiableList(byCategory.get(c)); }
     public Module find(String name) { return modules.stream().filter(m -> m.name().equalsIgnoreCase(name)).findFirst().orElse(null); }
+    public List<String> enabledNames() { return modules.stream().filter(Module::enabled).map(Module::name).toList(); }
+    public void restoreEnabledNames(Collection<String> names) { for (Module m : modules) m.setEnabled(names.contains(m.name())); }
 }
