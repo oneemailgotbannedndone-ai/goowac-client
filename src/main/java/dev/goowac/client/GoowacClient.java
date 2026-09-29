@@ -1,4 +1,5 @@
 package dev.goowac.client;
+import dev.goowac.client.config.ConfigStore;
 import dev.goowac.client.detection.*;
 import dev.goowac.client.module.*;
 import dev.goowac.client.music.*;
@@ -18,6 +19,7 @@ public final class GoowacClient implements ClientModInitializer {
     public static final ModuleManager MODULES = new ModuleManager();
     public static final SpotifyService SPOTIFY = new SpotifyService();
     public static final DetectionTestEngine DETECTION_TEST = new DetectionTestEngine(MODULES);
+    public static final ConfigStore CONFIG = new ConfigStore(MODULES);
     private static KeyBinding menu, hud, sprint, coords, detection;
 
     public void onInitializeClient() {
@@ -27,6 +29,8 @@ public final class GoowacClient implements ClientModInitializer {
         sprint=key("toggle_sprint",GLFW.GLFW_KEY_G);
         coords=key("copy_coords",GLFW.GLFW_KEY_C);
         detection=key("detection_test",GLFW.GLFW_KEY_D);
+        CONFIG.load();
+        set("Detection Test", false);
         SPOTIFY.start();
 
         ClientTickEvents.END_CLIENT_TICK.register(c -> {
@@ -98,6 +102,7 @@ public final class GoowacClient implements ClientModInitializer {
         }
         Module module = MODULES.find("Detection Test");
         if (module != null) module.setEnabled(DETECTION_TEST.active());
+        CONFIG.save();
     }
 
     public static boolean enabled(String n) { Module m=MODULES.find(n); return m!=null&&m.enabled(); }
