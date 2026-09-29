@@ -25,6 +25,7 @@ public final class ModuleManager {
         add(ModuleCategory.CLIENT,"Spotify Now Playing","Read current Spotify track on macOS",true);
         add(ModuleCategory.CLIENT,"Spotify Lyrics","Show lyrics for current Spotify track",true);
         add(ModuleCategory.CLIENT,"Module List","Show enabled modules on HUD",true);
+        add(ModuleCategory.CLIENT,"Detection Test","Local-only synthetic anti-cheat detection harness",true);
     }
     public List<Module> all() { return Collections.unmodifiableList(modules); }
     public List<Module> category(ModuleCategory c) { return Collections.unmodifiableList(byCategory.get(c)); }
