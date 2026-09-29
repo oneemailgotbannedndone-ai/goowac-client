@@ -1,0 +1,46 @@
+name: Build and Release Goowac Client
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Build JAR
+        run: gradle build --no-daemon
+      - name: Find JAR
+        id: jar
+        shell: bash
+        run: |
+          JAR=$(find build/libs -maxdepth 1 -type f -name 'goowac-client-*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          echo "path=$JAR" >> "$GITHUB_OUTPUT"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: goowac-client-jar
+          path: ${{ steps.jar.outputs.path }}
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v$(grep '^mod_version=' gradle.properties | cut -d= -f2)"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${{ steps.jar.outputs.path }}" --clobber
+          else
+            gh release create "$TAG" "${{ steps.jar.outputs.path }}" --title "Goowac Client $TAG" --generate-notes
+          fi
