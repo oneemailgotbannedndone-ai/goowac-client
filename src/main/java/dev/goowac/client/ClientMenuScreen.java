@@ -151,7 +151,10 @@ public final class ClientMenuScreen extends Screen {
         context.fill(0, 0, width, height, BG);
         context.fill(left, top, right, bottom, PANEL);
         context.fill(left, top, right, top + 4, ACCENT);
-        context.drawBorder(left, top, 980, 560, 0xFF3B3C49);
+        context.fill(left, top, right, top + 1, 0xFF3B3C49);
+        context.fill(left, bottom - 1, right, bottom, 0xFF3B3C49);
+        context.fill(left, top, left + 1, bottom, 0xFF3B3C49);
+        context.fill(right - 1, top, right, bottom, 0xFF3B3C49);
 
         context.drawTextWithShadow(
             textRenderer, "GOOWAC", left + 22, top + 18, ACCENT);
